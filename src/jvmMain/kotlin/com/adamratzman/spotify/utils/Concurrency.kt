@@ -1,29 +1,15 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
+@file:JvmName("JvmCurrency")
 package com.adamratzman.spotify.utils
 
 import com.adamratzman.spotify.SpotifyRestAction
-import java.util.concurrent.CompletableFuture
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking as kRunBlocking
+import java.util.concurrent.CompletableFuture
+import kotlinx.coroutines.runBlocking
 
-actual inline fun <T> runBlockingMpp(crossinline coroutineCode: suspend () -> T): T = kRunBlocking {
-    coroutineCode()
-}
+actual inline fun <T> runBlockingMpp(noinline block: suspend CoroutineScope.() -> T): T = runBlocking(block = block)
 
 actual typealias TimeUnit = java.util.concurrent.TimeUnit
-
-internal actual fun CoroutineScope.schedule(
-    quantity: Int,
-    timeUnit: TimeUnit,
-    consumer: () -> Unit
-) {
-    launch {
-        delay(timeUnit.toMillis(quantity.toLong()))
-        consumer()
-    }
-}
 
 /**
  * Return this [SpotifyRestAction] as a normal [CompletableFuture]

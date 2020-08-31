@@ -130,11 +130,21 @@ kotlin {
         nodejs()
     }
 
+    macosX64("macos") {
+        mavenPublication {
+            artifactId = "spotify-api-kotlin-native-macos"
+            setupPom(artifactId)
+        }
+        binaries {
+            framework { }
+        }
+    }
+
     targets {
         sourceSets {
             val coroutineVersion = "1.3.9"
             val serializationVersion = "1.0.0-RC"
-            val spekVersion = "2.0.11"
+            val spekVersion = "2.0.12"
             val ktorVersion = "1.4.0"
 
             val commonMain by getting {
@@ -214,6 +224,24 @@ kotlin {
                     implementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
                     runtimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
                     runtimeOnly(kotlin("reflect"))
+                }
+            }
+
+            val macosMain by getting {
+                repositories {
+                    mavenCentral()
+                    jcenter()
+                }
+
+                dependencies {
+                    implementation("io.ktor:ktor-client-curl:$ktorVersion")
+                    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.0")
+                }
+            }
+
+            val macosTest by getting {
+                dependencies {
+                    implementation(kotlin("test"))
                 }
             }
 

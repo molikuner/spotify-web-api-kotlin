@@ -22,7 +22,7 @@ fun encodeToBase64(src: ByteArray): ByteArray {
         index += 3
 
         for (i in 3 downTo padSize) {
-            val char = (chunk shr (6 * i)) and BASE64_MASK.toInt()
+            val char = (chunk shr (6 * i)) and BASE64_MASK
             result.add(char.toBase64().toByte())
         }
         // Fill the pad with '='

@@ -1,13 +1,16 @@
-/* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
+import platform.posix.fprintf
+import platform.posix.stderr
+
 actual class SpotifyLogger actual constructor(actual var enabled: Boolean) {
+
     actual fun logInfo(message: String) {
-        if (enabled) console.info(message)
+        if (enabled) println(message)
     }
 
     actual fun logWarning(message: String) {
-        if (enabled) console.warn("Warning: $message")
+        if (enabled) println("Warning: $message")
     }
 
     actual fun logError(fatal: Boolean, message: String?, throwable: Throwable?) {
@@ -23,6 +26,7 @@ actual class SpotifyLogger actual constructor(actual var enabled: Boolean) {
             append("\n")
             append(throwable)
         }.toString()
-        console.error(error)
+        fprintf(stderr, error)
     }
+
 }

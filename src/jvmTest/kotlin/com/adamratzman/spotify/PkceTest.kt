@@ -1,17 +1,12 @@
 /* Spotify Web API, Kotlin Wrapper; MIT License, 2017-2020; Original author: Adam Ratzman */
 package com.adamratzman.spotify
 
-import com.adamratzman.spotify.SpotifyException.AuthenticationException
-import kotlin.random.Random
-import kotlin.test.assertFailsWith
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import spark.Spark.exception
-import spark.Spark.get
-import spark.Spark.port
+import kotlin.test.assertEquals
 
 class PkceTest : Spek({
-    if (getEnvironmentVariable("VERBOSE_TEST_ENABLED")?.toBoolean() == true &&
+/*    if (getEnvironmentVariable("VERBOSE_TEST_ENABLED")?.toBoolean() == true &&
             _clientId != null) {
         val serverRedirectUri = "http://localhost:1337"
         describe("verbose pkce test. print auth, wait for redirect. requires VERBOSE_TEST_ENABLED=true AND http://localhost:1337 as a redirect uri") {
@@ -73,5 +68,27 @@ class PkceTest : Spek({
                 Thread.sleep(2000)
             }
         }
+    }*/
+
+    describe("should encode pkce code challenge correctly - 'hello, world!'") {
+        val input = "hello, world!"
+
+        val output = getSpotifyPkceCodeChallenge(input)
+
+        assertEquals(
+            "aOZWslHmfoNYvvhIOrDVHGYZ8-ehqfDnWDjUH_No9yg",
+            output
+        )
+    }
+
+    describe("should encode pkce code challenge correctly - 'some random challenge with 123'") {
+        val input = "some random challenge with 123"
+
+        val output = getSpotifyPkceCodeChallenge(input)
+
+        assertEquals(
+            "zBFFQqUWuYhaAn_gj9E4uKI9JZP1tJRQzKuPHGr8C4Q",
+            output
+        )
     }
 })
